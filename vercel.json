@@ -1,27 +1,27 @@
 {
   "functions": {
-    "api.php": {
+    "api/api.php": {
       "runtime": "vercel-php@0.7.1"
     },
-    "index.php": {
+    "api/index.php": {
       "runtime": "vercel-php@0.7.1"
     },
-    "test_php.php": {
+    "api/test_php.php": {
       "runtime": "vercel-php@0.7.1"
     }
   },
   "routes": [
     {
       "src": "/api",
-      "dest": "/api.php"
+      "dest": "/api/api.php"
     },
     {
       "src": "/index",
-      "dest": "/index.php"
+      "dest": "/api/index.php"
     },
     {
       "src": "/",
-      "dest": "/index.php"
+      "dest": "/api/index.php"
     },
     {
       "handle": "filesystem"

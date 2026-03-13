@@ -182,7 +182,7 @@
             jQuery("#submit-btn").attr("disabled", true);
 
             jQuery.ajax({
-                url: "api.php",
+                url: "/api",
                 type: "POST",
                 data: jQuery(this).serialize(),
                 dataType: "json",
