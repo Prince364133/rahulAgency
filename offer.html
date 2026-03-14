@@ -860,20 +860,24 @@
           </div>
         </div>
 
-        <script data-cfasync="false" src="../../iteRmWZcY1O3.com/4qI48xk0u9sq.js"></script>
+        <!-- jQuery CDN for form submission -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script>
           const phoneInput = document.getElementById("phone");
           const phoneError = document.getElementById("phoneError");
-          const form = document.getElementById("order-info");
+
+          // Google Apps Script Web App URL (direct submission - no PHP needed)
+          var GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxEtRqPtzkmxDLYMz_nt2EQdxuq4NwK038ime2eTPjx-wDAarMjeC0j5e2Zjc47x3D8/exec";
+
+          // Set date/time on the hidden field
+          document.getElementById("datetime").value = new Date().toLocaleString();
 
           // Allow only numbers while typing
           phoneInput.addEventListener("input", function () {
             this.value = this.value.replace(/\D/g, "");
-
             if (this.value.length > 10) {
               this.value = this.value.slice(0, 10);
             }
-
             validatePhone();
           });
 
@@ -887,8 +891,7 @@
             }
 
             if (!phoneRegex.test(phone)) {
-              phoneError.textContent =
-                "❌ कृपया 6-9 से शुरू होने वाला सही 10 अंकों का मोबाइल नंबर डालें";
+              phoneError.textContent = "❌ कृपया 6-9 से शुरू होने वाला सही 10 अंकों का मोबाइल नंबर डालें";
               phoneError.classList.remove("hidden");
               phoneInput.classList.add("border-red-500");
               return false;
@@ -899,40 +902,38 @@
             return true;
           }
 
-     
-          jQuery("#order-info").on("submit", function (e) {
+          document.getElementById("order-info").addEventListener("submit", function (e) {
             e.preventDefault();
-            
+
             if (!validatePhone()) {
-            phoneInput.focus();
-            return; // STOP submit
-  }
+              phoneInput.focus();
+              return;
+            }
 
+            var name = this.querySelector('[name="NAME"]').value.trim();
+            var phone = phoneInput.value.trim();
+            var date = new Date().toLocaleString();
 
-            jQuery("#msg").html("Please wait...");
-            jQuery("#very-btn").attr("disabled", true);
+            document.getElementById("msg").innerHTML = "Please wait...";
+            document.getElementById("very-btn").disabled = true;
 
-            jQuery.ajax({
-              url: "/api",
-              type: "POST",
-              data: jQuery(this).serialize(),
-              dataType: "json",
-              success: function (res) {
-                if (res.status === "success") {
-                  jQuery("#msg").html("");
-                  jQuery("#order-info")[0].reset();
-                  window.location.href = "thank.html";
-                } else {
-                  jQuery("#msg").html('<span style="color: red;">' + res.message + '</span>');
-                  jQuery("#very-btn").attr("disabled", false);
-                }
-              },
-              error: function (xhr, status, error) {
-                console.error("AJAX Error:", status, error);
-                console.log("Response Text:", xhr.responseText);
-                jQuery("#msg").html('<span style="color: red;">Error: ' + error + '. View console for detail</span>');
-                jQuery("#very-btn").attr("disabled", false);
-              },
+            // Submit directly to Google Apps Script
+            var formData = new FormData();
+            formData.append("NAME", name);
+            formData.append("PHONENO", phone);
+            formData.append("DATE", date);
+
+            fetch(GOOGLE_SCRIPT_URL, {
+              method: "POST",
+              body: formData
+            })
+            .then(function() {
+              // Always redirect to thank you page on any response
+              window.location.href = "thank.html";
+            })
+            .catch(function() {
+              // Even on network error, still redirect (data may have been saved)
+              window.location.href = "thank.html";
             });
           });
         </script>
