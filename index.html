@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,48 +9,76 @@
     <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
     <!-- Meta Pixel Code -->
     <script>
-    !function(f,b,e,v,n,t,s)
-    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-    n.queue=[];t=b.createElement(e);t.async=!0;
-    t.src=v;s=b.getElementsByTagName(e)[0];
-    s.parentNode.insertBefore(t,s)}(window, document,'script',
-    'https://connect.facebook.net/en_US/fbevents.js');
-    fbq('init', '1880710892643408');
-    fbq('track', 'PageView');
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '1880710892643408');
+        fbq('track', 'PageView');
     </script>
     <noscript><img height="1" width="1" style="display:none"
-    src="https://www.facebook.com/tr?id=1880710892643408&ev=PageView&noscript=1"
-    /></noscript>
+            src="https://www.facebook.com/tr?id=1880710892643408&ev=PageView&noscript=1" /></noscript>
     <!-- End Meta Pixel Code -->
     <style>
         .form-section {
             background: #fff;
             padding: 40px;
             border-radius: 30px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.05);
             max-width: 600px;
-            margin: -120px auto 40px; /* Reduced gap */
+            margin: -120px auto 40px;
+            /* Reduced gap */
             position: relative;
             z-index: 10;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0, 0, 0, 0.05);
         }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 10px; color: var(--color-primary); }
-        .form-group input { 
-            width: 100%; 
-            padding: 15px; 
-            border: 1px solid #ddd; 
-            border-radius: 10px; 
-            font-size: 1rem; 
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--color-primary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 1rem;
             background: #f9f9f9;
         }
-        .phone-input { position: relative; }
-        .phone-input span { position: absolute; left: 15px; top: 15px; font-weight: bold; border-right: 1px solid #ccc; padding-right: 10px; }
-        .phone-input input { padding-left: 65px; }
+
+        .phone-input {
+            position: relative;
+        }
+
+        .phone-input span {
+            position: absolute;
+            left: 15px;
+            top: 15px;
+            font-weight: bold;
+            border-right: 1px solid #ccc;
+            padding-right: 10px;
+        }
+
+        .phone-input input {
+            padding-left: 65px;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- Header -->
@@ -79,9 +108,11 @@
         <div class="container text-center">
             <span class="accent-text">प्राचीन आयुर्वेद का आधुनिक सार</span>
             <h1>शक्ति, साहस और ऊर्जा का नया पर्याय</h1>
-            <p>Horse Fire Project का लक्ष्य है पुरुषों के स्वास्थ्य को पूरी तरह से प्राकृतिक और आयुर्वेदिक जड़ीबूटियों के माध्यम से पुनः जीवित करना।</p>
+            <p>Horse Fire Project का लक्ष्य है पुरुषों के स्वास्थ्य को पूरी तरह से प्राकृतिक और आयुर्वेदिक जड़ीबूटियों के
+                माध्यम से पुनः जीवित करना।</p>
             <div class="hero-img-wrapper">
-                 <img src="img/bottle_hero.png" alt="Horse Fire Hero" class="img-fluid shadow-premium floating-img" style="max-width: 450px;">
+                <img src="img/bottle_hero.png" alt="Horse Fire Hero" class="img-fluid shadow-premium floating-img"
+                    style="max-width: 450px;">
             </div>
         </div>
     </section>
@@ -100,9 +131,12 @@
                     <label>मोबाइल नंबर</label>
                     <div class="phone-input">
                         <span>+91</span>
-                        <input type="tel" id="phone" name="PHONENO" required maxlength="10" placeholder="10 अंकों का नंबर">
+                        <input type="tel" id="phone" name="PHONENO" required maxlength="10"
+                            placeholder="10 अंकों का नंबर">
                     </div>
-                    <p id="phoneError" style="color: #ef4444; font-size: 0.85rem; margin-top: 8px; display: none; font-weight: 600;">❌ कृपया सही नंबर डालें</p>
+                    <p id="phoneError"
+                        style="color: #ef4444; font-size: 0.85rem; margin-top: 8px; display: none; font-weight: 600;">❌
+                        कृपया सही नंबर डालें</p>
                 </div>
                 <button type="submit" id="submit-btn" class="btn btn-primary w-100">ऑर्डर सबमिट करें</button>
                 <p id="msg" class="text-center mt-30" style="font-weight: 700; color: var(--color-primary);"></p>
@@ -110,9 +144,7 @@
         </div>
     </div>
 
-    <section class="banner-section" style="padding: 0; margin-top: -10px;">
-        <img src="img/gentle-sex-12.gif" alt="Mens Health Banner" class="img-fluid w-100 shadow-premium">
-    </section>
+
 
     <!-- About Section -->
     <section class="bg-light">
@@ -120,19 +152,24 @@
             <h2>एक सुरक्षित और प्रभावी समाधान</h2>
         </div>
         <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; align-items: center;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 30px; align-items: center;">
                 <div>
-                     <img src="img/ingredients.png" alt="Ayurvedic Ingredients" class="img-fluid shadow-premium">
+                    <img src="img/ingredients.png" alt="Ayurvedic Ingredients" class="img-fluid shadow-premium">
                 </div>
                 <div>
                     <p style="font-size: 1.1rem; color: #4a5568; margin-bottom: 30px;">
-                        हमारा प्रोजेक्ट केवल एक सप्लीमेंट बेचने के बारे में नहीं है, बल्कि यह आयुर्वेद की खोई हुई विरासत को वापस लाने का एक प्रयास है। Horse Fire आधुनिक पुरुषों की जीवनशैली को ध्यान में रखकर तैयार किया गया है।
+                        हमारा प्रोजेक्ट केवल एक सप्लीमेंट बेचने के बारे में नहीं है, बल्कि यह आयुर्वेद की खोई हुई विरासत
+                        को वापस लाने का एक प्रयास है। Horse Fire आधुनिक पुरुषों की जीवनशैली को ध्यान में रखकर तैयार किया
+                        गया है।
                     </p>
                     <div class="card mb-30" style="padding: 30px;">
-                        <p><strong>🍃 100% शाकाहारी:</strong> कोई हानिकारक रसायन या पशु उत्पाद नहीं। इसे पूरी तरह से शुद्ध जड़ी-बूटियों से बनाया गया है।</p>
+                        <p><strong>🍃 100% शाकाहारी:</strong> कोई हानिकारक रसायन या पशु उत्पाद नहीं। इसे पूरी तरह से
+                            शुद्ध जड़ी-बूटियों से बनाया गया है।</p>
                     </div>
                     <div class="card" style="padding: 30px;">
-                        <p><strong>🔬 वैज्ञानिक प्रमाण:</strong> प्राचीन ग्रंथों और आधुनिक लैब टेस्टिंग का संगम, जो आपको देता है भरोसा और परिणाम।</p>
+                        <p><strong>🔬 वैज्ञानिक प्रमाण:</strong> प्राचीन ग्रंथों और आधुनिक लैब टेस्टिंग का संगम, जो आपको
+                            देता है भरोसा और परिणाम।</p>
                     </div>
                 </div>
             </div>
@@ -143,8 +180,9 @@
     <footer>
         <div class="container">
             <img src="img/logo.png" alt="Logo" class="logo">
-            <p style="max-width: 600px; margin: 0 auto 30px;">Horse Fire Project - शुद्ध आयुर्वेद और आधुनिक विज्ञान का मिलन।</p>
-            
+            <p style="max-width: 600px; margin: 0 auto 30px;">Horse Fire Project - शुद्ध आयुर्वेद और आधुनिक विज्ञान का
+                मिलन।</p>
+
             <div class="footer-links">
                 <a href="privacy.html">प्राइवेसी पॉलिसी</a>
                 <a href="terms.html">नियम और शर्तें</a>
@@ -154,7 +192,9 @@
 
             <div class="copyright">
                 <p>&copy; 2024 Horse Fire Project. सभी अधिकार सुरक्षित।</p>
-                <p class="meta-disclaimer">This site is not a part of the Facebook website or Facebook Inc. Additionally, This site is NOT endorsed by Facebook in any way. FACEBOOK is a trademark of FACEBOOK, Inc.</p>
+                <p class="meta-disclaimer">This site is not a part of the Facebook website or Facebook Inc.
+                    Additionally, This site is NOT endorsed by Facebook in any way. FACEBOOK is a trademark of FACEBOOK,
+                    Inc.</p>
             </div>
         </div>
     </footer>
@@ -162,18 +202,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         document.getElementById("datetime").value = new Date().toLocaleString();
-        
+
         const phoneInput = document.getElementById("phone");
         const phoneError = document.getElementById("phoneError");
 
-        phoneInput.addEventListener("input", function() {
+        phoneInput.addEventListener("input", function () {
             this.value = this.value.replace(/\D/g, "").slice(0, 10);
             if (/^[6-9]\d{9}$/.test(this.value)) {
                 phoneError.style.display = "none";
             }
         });
 
-        jQuery("#order-form").on("submit", function(e) {
+        jQuery("#order-form").on("submit", function (e) {
             e.preventDefault();
             const phone = phoneInput.value;
             if (!/^[6-9]\d{9}$/.test(phone)) {
@@ -190,7 +230,7 @@
                 type: "POST",
                 data: jQuery(this).serialize(),
                 dataType: "json",
-                success: function(res) {
+                success: function (res) {
                     if (res.status === "success") {
                         window.location.href = "thank.html";
                     } else {
@@ -198,7 +238,7 @@
                         jQuery("#submit-btn").attr("disabled", false);
                     }
                 },
-                error: function(xhr, status, error) {
+                error: function (xhr, status, error) {
                     console.error("AJAX Error:", status, error);
                     console.log("Response Text:", xhr.responseText);
                     jQuery("#msg").html('<span style="color: red;">Error: ' + error + '. Check console for details.</span>');
@@ -223,4 +263,5 @@
         });
     </script>
 </body>
+
 </html>
