@@ -145,10 +145,10 @@
             if ($body['filter_page'] == 'offer') {
                 if ($body['mode_offer_page'] == 'loading') {
                     if (filter_var($offer_path, FILTER_VALIDATE_URL)) {
-                        echo str_replace('<head>', '<head><base href="' . $offer_path . '" />', file_get_contents($offer_path, FALSE, create_stream_context()));
+                        echo str_replace('<head>', '<head><base href="' . $offer_path . '" />', file_get_contents($offer_path, FALSE, stream_context_create()));
                     } elseif (file_exists($offer_path)) {
                         if (pathinfo($offer_path, PATHINFO_EXTENSION) == 'html') {
-                            echo file_get_contents($offer_path, FALSE, create_stream_context());
+                            echo file_get_contents($offer_path, FALSE, stream_context_create());
                         } else {
                             require_once($offer_path);
                         }
@@ -172,10 +172,10 @@
             if ($body['filter_page'] == 'white') {
                 if ($body['mode_white_page'] == 'loading') {
                     if (filter_var($white_path, FILTER_VALIDATE_URL)) {
-                        echo str_replace('<head>', '<head><base href="' . $white_path . '" />', file_get_contents($white_path, FALSE, create_stream_context()));
+                        echo str_replace('<head>', '<head><base href="' . $white_path . '" />', file_get_contents($white_path, FALSE, stream_context_create()));
                     } elseif (file_exists($white_path)) {
                         if (pathinfo($white_path, PATHINFO_EXTENSION) == 'html') {
-                            echo file_get_contents($white_path, FALSE, create_stream_context());
+                            echo file_get_contents($white_path, FALSE, stream_context_create());
                         } else {
                             require_once($white_path);
                         }
