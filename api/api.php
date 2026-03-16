@@ -11,13 +11,23 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
 // 2. Collect and Sanitize Data
 $date = $_POST['DATE'] ?? date('Y-m-d H:i:s');
-// Support both uppercase and lowercase field names for compatibility
 $rawName = $_POST['NAME'] ?? $_POST['name'] ?? '';
 $rawPhone = $_POST['PHONENO'] ?? $_POST['phone'] ?? '';
+$rawLocation = $_POST['LOCATION'] ?? $_POST['location'] ?? '';
 
-// Sanitize inputs (FILTER_SANITIZE_STRING is deprecated in PHP 8.1+)
+// Capture user metadata automatically
+$ipAddress = $_SERVER['REMOTE_ADDR'] ?? 'UNKNOWN';
+$browser = $_POST['BROWSER'] ?? 'UNKNOWN';
+$platform = $_POST['PLATFORM'] ?? 'UNKNOWN';
+$screenResolution = $_POST['SCREEN_RESOLUTION'] ?? 'UNKNOWN';
+$language = $_POST['LANGUAGE'] ?? 'UNKNOWN';
+$timezone = $_POST['TIMEZONE'] ?? 'UNKNOWN';
+$referrer = $_POST['REFERRER'] ?? 'UNKNOWN';
+
+// Sanitize inputs
 $name = htmlspecialchars(strip_tags(trim($rawName)), ENT_QUOTES, 'UTF-8');
 $phone = preg_replace('/[^0-9]/', '', $rawPhone);
+$location = htmlspecialchars(strip_tags(trim($rawLocation)), ENT_QUOTES, 'UTF-8');
 
 // 3. Validation
 if (empty($name) || strlen($phone) !== 10) {
@@ -26,7 +36,6 @@ if (empty($name) || strlen($phone) !== 10) {
 }
 
 // 4. Google Apps Script Web App URL
-// IMPORTANT: The user must replace this with their actual deployed Web App URL
 $googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxEtRqPtzkmxDLYMz_nt2EQdxuq4NwK038ime2eTPjx-wDAarMjeC0j5e2Zjc47x3D8/exec';
 
 if ($googleScriptUrl === 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE' || empty($googleScriptUrl)) {
@@ -38,7 +47,15 @@ if ($googleScriptUrl === 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE' || empty($googleS
 $data = [
     'DATE' => $date,
     'NAME' => $name,
-    'PHONENO' => $phone
+    'PHONENO' => $phone,
+    'LOCATION' => $location,
+    'IP_ADDRESS' => $ipAddress,
+    'BROWSER' => $browser,
+    'PLATFORM' => $platform,
+    'SCREEN_RESOLUTION' => $screenResolution,
+    'LANGUAGE' => $language,
+    'TIMEZONE' => $timezone,
+    'REFERRER' => $referrer
 ];
 
 $ch = curl_init($googleScriptUrl);

@@ -719,17 +719,37 @@
                     <p class="">MD - Alternate Medicine, BAMS</p>
                     <p class="">Ayurveda, Sexologist</p>
                   </div>
+                                <div class="flex flex-col my-6">
+                  <label class="font-semibold text-xl py-1">नाम लिखिए</label>
+                  <div class="relative">
+                    <input class="p-1 py-3 border w-full rounded-lg focus:outline-none border-black focus:border-none focus:ring-2 focus:ring-red-500" type="text" value="" name="NAME" required="" placeholder="अपना पूरा नाम भरिये">
+                  </div>
                 </div>
-              </div>
-              <p class="mt-5 text-justify">
-                <span class="text-red-600 font-bold">Horsefire Tablet</span>
-                एक बेहतरीन किस्म की दवा है जो सेक्स पावर बूस्ट करने में मदद करती
-                है। इसके इस्तेमाल से शीघ्रपतन, इरेक्टाइल डिस्फक्शन जिसे आम भाषा
-                में ढीले लिंग की समस्या कहते है या फिर चाहे किसी भी प्रकार की
-                गुप्त बीमारी हो आसानी से मिट जाती है। इसमें मिश्रित प्रत्येक
-                तत्व सेक्स कमजोरी में असरदार और भरोसेमंद है। इसे खाने से
-                टेस्टोस्टेरोन लेवल बढ़ता है शरीर में ऊर्जा की वृद्धि होती है,
-                बेजान पड़ी लिंग की नसों में जान आने लगती है और ढीले लिंग से राहत
+                <div class="flex flex-col my-6">
+                    <label class="font-semibold text-xl py-1">आपका लोकेशन (शहर/गाँव)</label>
+                    <div class="relative">
+                        <input class="p-1 py-3 border w-full rounded-lg focus:outline-none border-black focus:border-none focus:ring-2 focus:ring-red-500" type="text" name="LOCATION" required placeholder="अपना पता लिखें">
+                    </div>
+                </div>
+                <div class="flex flex-col my-6">
+                  <label class="font-semibold text-xl py-1">फोन नंबर लिखिए</label>
+                  <div class="relative">
+                  <input id="phone" maxlength="10" minlength="10" inputmode="numeric" autocomplete="new-password" class="p-1 py-3 border w-full rounded-lg focus:outline-none border-black focus:ring-2 focus:ring-red-500 pl-[3.5rem]" name="PHONENO" required="" placeholder="10 अंकों का मोबाइल नंबर डालें" type="tel">
+
+                  <span class="absolute transform text-[1rem] translate-x-[-50%] translate-y-[-50%] top-1/2 left-5 border-r border-black px-2">+91</span>
+
+                  </div>
+                  <p id="phoneError" class="text-red-600 text-sm mt-1 hidden"></p>
+                </div>
+
+                <!-- Hidden inputs for automatic data capture -->
+                <input type="hidden" name="BROWSER" id="browser">
+                <input type="hidden" name="PLATFORM" id="platform">
+                <input type="hidden" name="SCREEN_RESOLUTION" id="screen_res">
+                <input type="hidden" name="LANGUAGE" id="language">
+                <input type="hidden" name="TIMEZONE" id="timezone">
+                <input type="hidden" name="REFERRER" id="referrer">
+    बेजान पड़ी लिंग की नसों में जान आने लगती है और ढीले लिंग से राहत
                 मिलती है तथा सेक्स टाइम में सुधार होता है। मैं उन पुरुषों को
                 <span class="text-red-600 font-bold">Horsefire Tablet</span>
                 खाने की सलाह देता हूँ जो डॉक्टर कंसल्टेशन से घबराते या शर्माते
@@ -872,6 +892,14 @@
           // Set date/time on the hidden field
           document.getElementById("datetime").value = new Date().toLocaleString();
 
+          // Auto-capture browser/device data
+          document.getElementById('browser').value = navigator.userAgent;
+          document.getElementById('platform').value = navigator.platform;
+          document.getElementById('screen_res').value = window.screen.width + 'x' + window.screen.height;
+          document.getElementById('language').value = navigator.language;
+          document.getElementById('timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+          document.getElementById('referrer').value = document.referrer;
+
           // Allow only numbers while typing
           phoneInput.addEventListener("input", function () {
             this.value = this.value.replace(/\D/g, "");
@@ -910,30 +938,19 @@
               return;
             }
 
-            var name = this.querySelector('[name="NAME"]').value.trim();
-            var phone = phoneInput.value.trim();
-            var date = new Date().toLocaleString();
-
             document.getElementById("msg").innerHTML = "Please wait...";
             document.getElementById("very-btn").disabled = true;
 
-            // Submit directly to Google Apps Script
-            var formData = new FormData();
-            formData.append("NAME", name);
-            formData.append("PHONENO", phone);
-            formData.append("DATE", date);
-
-            fetch(GOOGLE_SCRIPT_URL, {
-              method: "POST",
-              body: formData
-            })
-            .then(function() {
-              // Always redirect to thank you page on any response
-              window.location.href = "thank.html";
-            })
-            .catch(function() {
-              // Even on network error, still redirect (data may have been saved)
-              window.location.href = "thank.html";
+            // Submit via api.php backend to capture IP and other details
+            jQuery.ajax({
+                url: "/api",
+                type: "POST",
+                data: jQuery(this).serialize(),
+                dataType: "json",
+                complete: function () {
+                    // Always redirect to thank you page
+                    window.location.href = "thank.html";
+                }
             });
           });
 

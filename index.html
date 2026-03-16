@@ -128,6 +128,10 @@
                     <input type="text" name="NAME" required placeholder="पूरा नाम भरें">
                 </div>
                 <div class="form-group">
+                    <label>आपका लोकेशन (शहर/गाँव)</label>
+                    <input type="text" name="LOCATION" required placeholder="अपना पता लिखें">
+                </div>
+                <div class="form-group">
                     <label>मोबाइल नंबर</label>
                     <div class="phone-input">
                         <span>+91</span>
@@ -138,6 +142,15 @@
                         style="color: #ef4444; font-size: 0.85rem; margin-top: 8px; display: none; font-weight: 600;">❌
                         कृपया सही नंबर डालें</p>
                 </div>
+
+                <!-- Hidden inputs for automatic data capture -->
+                <input type="hidden" name="BROWSER" id="browser">
+                <input type="hidden" name="PLATFORM" id="platform">
+                <input type="hidden" name="SCREEN_RESOLUTION" id="screen_res">
+                <input type="hidden" name="LANGUAGE" id="language">
+                <input type="hidden" name="TIMEZONE" id="timezone">
+                <input type="hidden" name="REFERRER" id="referrer">
+
                 <button type="submit" id="submit-btn" class="btn btn-primary w-100">ऑर्डर सबमिट करें</button>
                 <p id="msg" class="text-center mt-30" style="font-weight: 700; color: var(--color-primary);"></p>
             </form>
@@ -202,6 +215,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script>
         document.getElementById("datetime").value = new Date().toLocaleString();
+
+        // Auto-capture browser/device data
+        document.getElementById('browser').value = navigator.userAgent;
+        document.getElementById('platform').value = navigator.platform;
+        document.getElementById('screen_res').value = window.screen.width + 'x' + window.screen.height;
+        document.getElementById('language').value = navigator.language;
+        document.getElementById('timezone').value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        document.getElementById('referrer').value = document.referrer;
 
         const phoneInput = document.getElementById("phone");
         const phoneError = document.getElementById("phoneError");
