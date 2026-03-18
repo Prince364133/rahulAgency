@@ -1,4 +1,9 @@
+function doGet(e) {
+  return doPost(e);
+}
+
 function doPost(e) {
+
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
   // Get data from the request
