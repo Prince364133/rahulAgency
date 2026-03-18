@@ -3,10 +3,9 @@ function doGet(e) {
 }
 
 function doPost(e) {
-
   var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
   
-  // Get data from the request
+  // Get all 11 fields from the request
   var date = e.parameter.DATE || new Date().toLocaleString();
   var name = e.parameter.NAME || 'N/A';
   var phone = e.parameter.PHONENO || 'N/A';
@@ -19,7 +18,7 @@ function doPost(e) {
   var timezone = e.parameter.TIMEZONE || 'N/A';
   var referrer = e.parameter.REFERRER || 'N/A';
   
-  // Append a new row to the sheet (Date, Name, Phone, Address, IP, Browser, Platform, Resolution, Language, Timezone, Referrer)
+  // Append a new row to the sheet (must match the column headers in your sheet)
   sheet.appendRow([date, name, phone, address, ip, browser, platform, screenRes, language, timezone, referrer]);
   
   // Return success response in JSON format

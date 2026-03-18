@@ -43,7 +43,8 @@ if (empty($name) || strlen($phone) !== 10) {
 }
 
 // 4. Google Apps Script Web App URL
-$googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxEtRqPtzkmxDLYMz_nt2EQdxuq4NwK038ime2eTPjx-wDAarMjeC0j5e2Zjc47x3D8/exec';
+$googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxn2aYubFbN8o8rQcF6_8Px4-VGJSPRaGk7dzBzck88jzvbNzrVM3hOto_5ttPsOPOj/exec';
+
 
 if ($googleScriptUrl === 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE' || empty($googleScriptUrl)) {
     echo json_encode(['status' => 'error', 'message' => 'Backend Error: Google Script URL is not set in api.php.']);
