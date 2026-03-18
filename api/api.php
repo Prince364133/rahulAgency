@@ -43,7 +43,7 @@ if (empty($name) || strlen($phone) !== 10) {
 }
 
 // 4. Google Apps Script Web App URL
-$googleScriptUrl = 'https://script.google.com/macros/s/AKfycbxn2aYubFbN8o8rQcF6_8Px4-VGJSPRaGk7dzBzck88jzvbNzrVM3hOto_5ttPsOPOj/exec';
+$googleScriptUrl = 'https://script.google.com/macros/s/AKfycbzG1z6zeRAVxNeoHozvWmvmQrl8KK9nK8bAb2spzUQc2mGxgrkWk7uVqvDVG7iS7Aiv/exec';
 
 
 if ($googleScriptUrl === 'YOUR_GOOGLE_SCRIPT_WEB_APP_URL_HERE' || empty($googleScriptUrl)) {
