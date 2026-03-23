@@ -18,8 +18,8 @@ async function run() {
     const result = await Settings.findOneAndUpdate(
       { _id: 'app_settings' },
       { 
-        whatsapp_number: '919540136589',
-        phone_display: '+91 95401 36589'
+        whatsapp_number: '910000000000',
+        phone_display: 'Support Available'
       },
       { upsert: true, new: true }
     );

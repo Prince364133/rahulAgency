@@ -28,9 +28,9 @@ async function seed() {
     // 1. Seed Settings (Upsert)
     const defaultSettings = {
       _id: "app_settings",
-      whatsapp_number: "919540136589",
+      whatsapp_number: "910000000000",
       backend_url: "https://your-app.onrender.com",
-      phone_display: "+91 95401 36589",
+      phone_display: "Support Available",
       business_name: "Horse Fire",
       offer_price: "999",
       original_price: "4999",
@@ -81,7 +81,7 @@ async function seed() {
 ║ MongoDB: horsefiredb                         ║
 ║ Leads seeded: 10                             ║
 ║ Settings seeded: yes                         ║
-║ WhatsApp: +91 95401 36589                    ║
+║ WhatsApp: Support Available                  ║
 ╚══════════════════════════════════════════════╝
     `);
 

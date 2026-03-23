@@ -75,7 +75,7 @@ This creates the app settings document and 10 test leads.
 ```
 
 ## 📞 WhatsApp Number
-Currently set to: **+91 95401 36589**  
+Currently set to: **Support Available**  
 To update: **Admin Dashboard → Settings tab → enter new number → Save**.
 
 ## 🔄 Cloaking System
