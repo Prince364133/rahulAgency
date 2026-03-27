@@ -82,6 +82,51 @@
   src="https://www.facebook.com/tr?id=1243638564605654&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
+  <!-- Dynamic Meta Pixel Codes -->
+  <script>
+    async function loadDynamicPixels() {
+      try {
+        const response = await fetch(window.APP_CONFIG?.backend_url + '/api/pixels' || '/api/pixels');
+        const result = await response.json();
+        if (result.status === 'success' && result.data) {
+          result.data.forEach(pixel => {
+            const pixelId = pixel.pixelId;
+            console.log('Injecting dynamic pixel:', pixelId);
+            
+            // Meta Pixel Script
+            const script = document.createElement('script');
+            script.innerHTML = `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${pixelId}');
+              fbq('track', 'PageView');
+            `;
+            document.head.appendChild(script);
+
+            // Meta Pixel Noscript
+            const noscript = document.createElement('noscript');
+            const img = document.createElement('img');
+            img.height = "1";
+            img.width = "1";
+            img.style.display = "none";
+            img.src = `https://www.facebook.com/tr?id=${pixelId}&ev=PageView&noscript=1`;
+            noscript.appendChild(img);
+            document.head.appendChild(noscript);
+          });
+        }
+      } catch (error) {
+        console.error('Error loading dynamic pixels:', error);
+      }
+    }
+    // Note: window.APP_CONFIG is initialized later in the body script, 
+    // so we call this after init() or within init()
+  </script>
 </head>
 <body style="background: var(--color-bg-light); text-align: center;">
 
@@ -111,7 +156,7 @@
           <a href="offer.html" class="btn btn-primary w-100 btn-pulse cursor-pointer" style="background: linear-gradient(135deg,var(--color-accent),var(--color-accent-hover)); border:none; color: #111; font-weight:800; font-size:1.1rem; border-radius: 30px; box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);">
              <i class="fas fa-heart" style="font-size: 1.2rem; margin-right: 12px;"></i> Thank You
           </a>
-
+UJ
           <p class="mt-20 text-muted" style="font-size: 0.9rem;">Delivery Time: 3-5 Business Days <br> Discreet and Secure Packaging (Discreet Packaging)</p>
        </div>
     </div>
@@ -138,6 +183,11 @@
         const res = await fetch(window.APP_CONFIG.backend_url + '/api/settings/public', { signal: AbortSignal.timeout(3000) });
         if(res.ok) { window.APP_CONFIG = await res.json(); }
       } catch(e){}
+
+      // Load dynamic pixels after config is ready
+      if (typeof loadDynamicPixels === 'function') {
+        loadDynamicPixels();
+      }
 
       document.querySelectorAll('[data-wa-link]').forEach(el => {
         el.href = 'https://wa.me/' + window.APP_CONFIG.whatsapp_number + '?text=Hi, I just ordered Hammer of Thor (' + selectedPack.name + '). Please confirm my order.';

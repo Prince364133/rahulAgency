@@ -6,6 +6,7 @@ const rateLimit = require('express-rate-limit');
 
 const leadsRouter = require('./routes/leads');
 const adminRouter = require('./routes/admin');
+const pixelsRouter = require('./routes/pixels');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -42,6 +43,7 @@ app.get('/health', async (req, res) => {
 app.use('/api/leads', leadsLimiter, leadsRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/settings', leadsRouter); // For /api/settings/public
+app.use('/api/pixels', pixelsRouter);
 
 // ===== DB CONNECT =====
 mongoose.connect(process.env.MONGO_URI)
