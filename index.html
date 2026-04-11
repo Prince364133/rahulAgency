@@ -211,6 +211,56 @@
       -webkit-line-clamp: 3; /* Limit long descriptions */
       -webkit-box-orient: vertical;
     }
+
+    /* Location Autocomplete Styles */
+    .address-wrapper { position: relative; }
+    .location-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        z-index: 1000;
+        max-height: 250px;
+        overflow-y: auto;
+        display: none;
+        text-align: left;
+    }
+    .suggestion-item {
+        padding: 12px 16px;
+        cursor: pointer;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 13px;
+        transition: 0.2s;
+        color: #1e293b;
+    }
+    .suggestion-item:last-child { border-bottom: none; }
+    .suggestion-item:hover { background: #f8fafc; color: #10b981; }
+    .suggestion-item i { margin-right: 10px; color: #94a3b8; }
+    
+    .locate-btn {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background: #f1f5f9;
+        color: #64748b;
+        border: none;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-size: 10px;
+        font-weight: 800;
+        cursor: pointer;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        z-index: 10;
+        text-transform: uppercase;
+    }
+    .locate-btn:hover { background: #e2e8f0; color: #10b981; }
   </style>
 </head>
 <body>
@@ -488,7 +538,16 @@
                       </div>
 
                       <!-- Address -->
-                      <textarea name="ADDRESS" placeholder="Full Delivery Address" required rows="3" class="w-full px-4 py-3 border border-slate-300 rounded focus:border-blue-500 outline-none font-medium text-slate-700"></textarea>
+                      <div class="address-wrapper">
+                          <button type="button" class="locate-btn" onclick="detectUserLocation(this)">
+                              <i class="fas fa-location-arrow"></i> Detect Location
+                          </button>
+                          <textarea name="ADDRESS" id="address-input" placeholder="Full Delivery Address" required rows="3" 
+                                    onfocus="if(!this.value) detectUserLocation(this.previousElementSibling)"
+                                    oninput="handleAddressInput(this)"
+                                    class="w-full px-4 py-3 border border-slate-300 rounded focus:border-blue-500 outline-none font-medium text-slate-700 pr-32"></textarea>
+                          <div id="address-suggestions" class="location-suggestions"></div>
+                      </div>
 
                       <!-- City & Pin -->
                       <div class="grid grid-cols-2 gap-3">
@@ -589,6 +648,114 @@
         if (window.scrollY > 400) sticky.classList.add('visible');
         else sticky.classList.remove('visible');
       }
+    });
+
+    // ═══════════════ LOCATION SYSTEM ═══════════════
+    window.detectUserLocation = function(btn) {
+        if (!navigator.geolocation) {
+            alert("Geolocation is not supported by your browser.");
+            return;
+        }
+
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Detecting...';
+        btn.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(async (pos) => {
+            try {
+                const { latitude, longitude } = pos.coords;
+                // Reverse Geocoding using Nominatim (OpenStreetMap)
+                const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`, {
+                    headers: { 'User-Agent': 'PurevedaWebsiteBot/1.0' }
+                });
+                const data = await res.json();
+                
+                if (data && data.display_name) {
+                    const input = document.getElementById('address-input');
+                    input.value = data.display_name;
+                    
+                    // Try to find pincode/city
+                    const pincode = data.address.postcode || '';
+                    const city = data.address.city || data.address.town || data.address.village || '';
+                    
+                    if (pincode) document.getElementsByName('PINCODE')[0].value = pincode;
+                    if (city) document.getElementsByName('CITY')[0].value = city;
+                    
+                    btn.innerHTML = '<i class="fas fa-check"></i> Found!';
+                    setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 2000);
+                } else {
+                    throw new Error("Location not found");
+                }
+            } catch (err) {
+                console.error(err);
+                btn.innerHTML = '<i class="fas fa-exclamation-triangle"></i> Failed';
+                setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 2000);
+            }
+        }, (err) => {
+            console.error(err);
+            btn.innerHTML = '<i class="fas fa-times"></i> Denied';
+            setTimeout(() => { btn.innerHTML = originalText; btn.disabled = false; }, 2000);
+        }, { enableHighAccuracy: true });
+    };
+
+    let debounceTimer;
+    window.handleAddressInput = function(input) {
+        const query = input.value.trim();
+        const suggestionsEl = document.getElementById('address-suggestions');
+
+        if (query.length < 3) {
+            suggestionsEl.style.display = 'none';
+            return;
+        }
+
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(async () => {
+            try {
+                // Using Photon API (OpenStreetMap based autocomplete)
+                const res = await fetch(`https://photon.komoot.io/api/?q=${encodeURIComponent(query)}&limit=5`);
+                const data = await res.json();
+                
+                if (data.features && data.features.length > 0) {
+                    suggestionsEl.innerHTML = '';
+                    data.features.forEach(feat => {
+                        const props = feat.properties;
+                        const label = [
+                            props.name, 
+                            props.street, 
+                            props.district, 
+                            props.city, 
+                            props.state, 
+                            props.country
+                        ].filter(Boolean).join(', ');
+
+                        const div = document.createElement('div');
+                        div.className = 'suggestion-item';
+                        div.innerHTML = `<i class="fas fa-map-marker-alt"></i> ${label}`;
+                        div.onclick = () => {
+                            input.value = label;
+                            suggestionsEl.style.display = 'none';
+                            
+                            if (props.postcode) document.getElementsByName('PINCODE')[0].value = props.postcode;
+                            if (props.city) document.getElementsByName('CITY')[0].value = props.city;
+                        };
+                        suggestionsEl.appendChild(div);
+                    });
+                    suggestionsEl.style.display = 'block';
+                } else {
+                    suggestionsEl.style.display = 'none';
+                }
+            } catch (e) {
+                console.error("Autocomplete error:", e);
+            }
+        }, 300);
+    };
+
+    // Close suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.address-wrapper')) {
+            const el = document.getElementById('address-suggestions');
+            if (el) el.style.display = 'none';
+        }
     });
   </script>
 </body>
