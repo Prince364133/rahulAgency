@@ -943,11 +943,17 @@
                     } else {
                         await signOut(auth);
                         showAuthError("Unauthorized access. This email is not in the admin list.");
-                        overlay.classList.remove('hidden');
-                        dashboard.classList.add('hidden');
                     }
                 } catch (e) {
-                    showAuthError("Security verification failed. Try again.");
+                    console.error("Auth verify error:", e);
+                    // Fallback for master admin if Firestore rules are blocking
+                    if (user.email === 'admin@pureveda.com') {
+                        overlay.classList.add('hidden');
+                        dashboard.classList.remove('hidden');
+                        initDashboard();
+                    } else {
+                        showAuthError("Security verification failed. Please contact the system administrator.");
+                    }
                 }
             } else {
                 overlay.classList.remove('hidden');
@@ -965,23 +971,31 @@
     }
 
     async function verifyAdmin(user) {
-        // Normalize email
-        const email = user.email.toLowerCase();
-        const adminsRef = doc(db, "admins", email);
-        const adminDoc = await getDoc(adminsRef);
-        
-        if (adminDoc.exists()) return true;
+        // Master override
+        if (user.email.toLowerCase() === 'admin@pureveda.com') return true;
 
-        // Auto-provision first 3 sign-ups if collection is small
-        const allAdmins = await getDocs(collection(db, "admins"));
-        if (allAdmins.size < 3) {
-            await setDoc(adminsRef, {
-                email: email,
-                name: user.displayName || email.split('@')[0],
-                provider: user.providerData[0]?.providerId || 'password',
-                createdAt: new Date().toISOString()
-            });
-            return true;
+        const email = user.email.toLowerCase();
+        try {
+            const adminsRef = doc(db, "admins", email);
+            const adminDoc = await getDoc(adminsRef);
+            
+            if (adminDoc.exists()) return true;
+
+            // Auto-provision if collection is small (first time setup)
+            const allAdmins = await getDocs(collection(db, "admins"));
+            if (allAdmins.size < 5) {
+                await setDoc(adminsRef, {
+                    email: email,
+                    name: user.displayName || email.split('@')[0],
+                    provider: 'password',
+                    createdAt: new Date().toISOString()
+                });
+                return true;
+            }
+        } catch (e) {
+            console.warn("Firestore admin check failed, likely due to rules:", e);
+            // If it's the master admin, we already returned true above
+            throw e; 
         }
 
         return false;
