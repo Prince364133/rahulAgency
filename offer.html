@@ -76,7 +76,7 @@
             to { transform: rotate(360deg); }
         }
 
-        /* Modal & UI System (Synced with index.html) */
+        /* Modal & UI System (Synced with index) */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -1334,7 +1334,7 @@
 
             try {
                 await addDoc(collection(db, "leads"), payload);
-                window.location.href = "thank.html";
+                window.location.href = "thank";
             } catch (err) {
                 console.error(err);
                 alert("Submission failed. Please try again.");
