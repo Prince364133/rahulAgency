@@ -134,6 +134,42 @@ function updateDynamicElements(data) {
       el.style.display = 'none';
     });
   }
+
+  // Update Dynamic Video
+  const videoUrl = data.product_video_url || "";
+  const videoContainer = document.getElementById('dynamic-video-container');
+  if (videoUrl && videoContainer) {
+    const isYouTube = videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be');
+    
+    if (isYouTube) {
+      let videoId = "";
+      if (videoUrl.includes('watch?v=')) {
+        videoId = videoUrl.split('watch?v=')[1].split('&')[0];
+      } else if (videoUrl.includes('youtu.be/')) {
+        videoId = videoUrl.split('youtu.be/')[1].split('?')[0];
+      } else if (videoUrl.includes('embed/')) {
+        videoId = videoUrl.split('embed/')[1].split('?')[0];
+      }
+
+      if (videoId) {
+        videoContainer.innerHTML = `
+          <iframe class="w-full aspect-video" 
+                  src="https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&playlist=${videoId}" 
+                  title="YouTube video player" 
+                  frameborder="0" 
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                  referrerpolicy="strict-origin-when-cross-origin" 
+                  allowfullscreen></iframe>`;
+      }
+    } else {
+      // Direct Link
+      videoContainer.innerHTML = `
+        <video class="w-full h-auto" controls autoplay muted loop playsinline>
+            <source src="${videoUrl}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>`;
+    }
+  }
 }
 
 // Global pixel injection logic

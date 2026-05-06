@@ -697,6 +697,12 @@
                     <small>High quality PNG/JPG for the hero and product ritual sections</small>
                 </div>
 
+                <div class="form-group">
+                    <label>Product Video URL (YouTube or Direct Link)</label>
+                    <input type="text" id="s-video-url" placeholder="https://www.youtube.com/watch?v=... or https://example.com/video.mp4">
+                    <small>Support YouTube links or direct MP4/hosted video links</small>
+                </div>
+
                 <div class="row-2" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div class="form-group">
                         <label>Offer Price (₹)</label>
@@ -1459,6 +1465,7 @@
                 if (document.getElementById('s-offer-price')) document.getElementById('s-offer-price').value = parseInt(s.offer_price) || 0;
                 if (document.getElementById('s-original-price')) document.getElementById('s-original-price').value = parseInt(s.original_price) || 0;
                 if (document.getElementById('s-hero-image')) document.getElementById('s-hero-image').value = s.hero_image_url || '';
+                if (document.getElementById('s-video-url')) document.getElementById('s-video-url').value = s.product_video_url || '';
                 if (s.updated_at && document.getElementById('settings-updated')) {
                     document.getElementById('settings-updated').textContent = 'Last saved: ' + new Date(s.updated_at).toLocaleString();
                 }
@@ -1476,6 +1483,7 @@
         const offerPrice = document.getElementById('s-offer-price').value;
         const originalPrice = document.getElementById('s-original-price').value;
         const heroUrl = document.getElementById('s-hero-image').value;
+        const videoUrl = document.getElementById('s-video-url').value;
 
         const payload = {
             whatsapp_number: whatsapp,
@@ -1483,6 +1491,7 @@
             offer_price:     offerPrice,
             original_price:  originalPrice,
             hero_image_url:  heroUrl,
+            product_video_url: videoUrl,
             updated_at: new Date().toISOString()
         };
 
